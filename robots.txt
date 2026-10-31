@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://skyforrun.github.io/photostamp-pro/sitemap.xml
