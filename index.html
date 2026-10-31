@@ -1,8 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- PhotoStamp Pro — landing page. Product: https://skyforer.gumroad.com/l/photostamp-pro -->
-  <!-- Lite version: https://github.com/skyforrun/photostamp-pro -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
@@ -10,12 +8,11 @@
   <title>PhotoStamp Pro — Batch Watermark Script for Photoshop (JSX)</title>
   <meta name="description" content="Batch-watermark entire folders in Photoshop in one click. Logo + date, opacity/position/rotation/tile, non-destructive. One-time $29, instant download.">
   <meta property="og:title" content="PhotoStamp Pro — Batch-watermark 500 photos in Photoshop in one click">
-  <meta property="og:description" content="A Photoshop script (JSX) that stamps every photo in a folder: opacity, position, rotation, tiling. 100% local, one-time $29.">
+  <meta property="og:description" content="A Photoshop script (JSX) that stamps every photo in a folder: opacity, position, rotation, tiling. 100% local. 100% local, one-time $29.">
   <meta property="og:image" content="https://skyforrun.github.io/photostamp-pro/cover-square.png">
   <meta property="og:image:width" content="1080">
   <meta property="og:image:height" content="1080">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://skyforrun.github.io/photostamp-pro/cover-square.png">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308090a'/%3E%3Crect x='6.5' y='6.5' width='19' height='19' rx='5' fill='none' stroke='%235e6ad2' stroke-width='2'/%3E%3Cpath d='M11 19.5 L19.5 11 M14.5 22 L22 14.5' stroke='%235e6ad2' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
@@ -188,7 +185,7 @@
       font-size: 0.8125rem; color: var(--text-muted);
     }
     .hero-meta li { display: flex; align-items: center; gap: var(--space-3); }
-    .hero-meta li + li::before { content: "路"; color: var(--text-subtle); }
+    .hero-meta li + li::before { content: "·"; color: var(--text-subtle); }
     @media (max-width: 900px) {
       .hero-grid { grid-template-columns: 1fr; }
       .hero-copy { max-width: 640px; }
@@ -516,7 +513,7 @@
         <a href="#faq">FAQ</a>
       </nav>
       <div class="nav-right">
-        <a class="btn btn-primary btn-sm" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get it 鈥?$29</a>
+        <a class="btn btn-primary btn-sm" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get it — $29</a>
       </div>
     </div>
   </header>
@@ -527,13 +524,13 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <div class="hero-pills">
-            <span class="pill pill-accent"><span class="dot" aria-hidden="true"></span>Instant download 鈥?$29</span>
-            <span class="pill">Photoshop script 路 JSX</span>
+            <span class="pill pill-accent"><span class="dot" aria-hidden="true"></span>Instant download — $29</span>
+            <span class="pill">Photoshop script · JSX</span>
           </div>
           <h1 class="display" id="hero-title">Batch-watermark 500 photos in Photoshop in one click.</h1>
-          <p class="lead">PhotoStamp Pro stamps your logo, brand name, or date across an entire folder 鈥?opacity, position, rotation, and tiling under your control. Set it once, run it, and walk away.</p>
+          <p class="lead">PhotoStamp Pro stamps your logo, brand name, or date across an entire folder — opacity, position, rotation, and tiling under your control. Set it once, run it, and walk away.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro 鈥?$29</a>
+            <a class="btn btn-primary" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a>
             <a class="btn btn-ghost" href="#how">See how it works</a>
           </div>
           <ul class="hero-meta">
@@ -548,7 +545,7 @@
         <div class="mock" aria-hidden="true">
           <div class="mock-chrome">
             <span class="mock-dots"><i></i><i></i><i></i></span>
-            <span class="mock-title">PhotoStamp Pro.jsx 鈥?batch run</span>
+            <span class="mock-title">PhotoStamp Pro.jsx — batch run</span>
             <span class="mock-meta">512 imgs</span>
           </div>
           <div class="mock-body">
@@ -565,7 +562,7 @@
                     <path d="M54 84 L100 50 L150 84 Z" fill="#141a33"/>
                     <rect y="84" width="160" height="26" fill="#0d1122"/>
                   </svg>
-                  <div class="wm"><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span></div>
+                  <div class="wm"><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span></div>
                   <span class="tile-date">2026-10-05</span>
                   <span class="tile-tick"><svg viewBox="0 0 10 10" fill="none"><path d="M1.8 5.2 L4 7.4 L8.2 2.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
@@ -581,7 +578,7 @@
                     <path d="M10 74 Q 30 70 50 74 T 90 74 T 130 74 T 170 74" stroke="#3f7f8c" stroke-width="2" fill="none" opacity="0.7"/>
                     <path d="M0 88 Q 30 84 60 88 T 120 88 T 180 88" stroke="#356b78" stroke-width="2" fill="none" opacity="0.6"/>
                   </svg>
-                  <div class="wm"><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span></div>
+                  <div class="wm"><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span></div>
                   <span class="tile-date">2026-10-05</span>
                   <span class="tile-tick"><svg viewBox="0 0 10 10" fill="none"><path d="M1.8 5.2 L4 7.4 L8.2 2.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
@@ -598,13 +595,13 @@
                     <path d="M100 84 L134 56 L160 84 Z" fill="#171c33"/>
                     <rect y="84" width="160" height="26" fill="#0a0d1a"/>
                   </svg>
-                  <div class="wm"><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span></div>
+                  <div class="wm"><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span><span>© YOUR STUDIO</span></div>
                   <span class="tile-date">2026-10-05</span>
                   <span class="tile-tick"><svg viewBox="0 0 10 10" fill="none"><path d="M1.8 5.2 L4 7.4 L8.2 2.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </div>
               </div>
               <div class="progress-block">
-                <div class="progress-label"><span>stamping IMG_0419.jpg 鈫?/stamped</span><span>512 / 512</span></div>
+                <div class="progress-label"><span>stamping IMG_0419.jpg → /stamped</span><span>512 / 512</span></div>
                 <div class="progress"><i class="fill"></i></div>
               </div>
             </div>
@@ -614,7 +611,7 @@
                 <span class="logo-thumb">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#828fff" stroke-width="2"/><path d="M8 16 L16 8" stroke="#828fff" stroke-width="2" stroke-linecap="round"/></svg>
                 </span>
-                <span><b>logo_stamp.png</b><br><em>PNG 路 1200 px</em></span>
+                <span><b>logo_stamp.png</b><br><em>PNG · 1200 px</em></span>
               </div>
               <div class="ctl">
                 <div class="ctl-head"><span>Opacity</span><b>35%</b></div>
@@ -629,7 +626,7 @@
                   <div class="ctl-head"><span>Rotation</span></div>
                   <div class="rot">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10 a6 6 0 1 1 2 4.5" stroke="#7170ff" stroke-width="1.6" stroke-linecap="round"/><path d="M4 6.5 V10.5 H8" stroke="#7170ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    鈭?0掳
+                    −30°
                   </div>
                 </div>
               </div>
@@ -649,7 +646,7 @@
         <div class="section-head reveal">
           <p class="overline">The problem</p>
           <h2 class="section-title" id="pain-title">Still stamping photos one at a time?</h2>
-          <p class="lead muted">Every delivery cycle, the same ritual: open, place, opacity, rotate, save, repeat. It doesn't scale past a handful of files 鈥?and skipping it is how images walk away.</p>
+          <p class="lead muted">Every delivery cycle, the same ritual: open, place, opacity, rotate, save, repeat. It doesn't scale past a handful of files — and skipping it is how images walk away.</p>
         </div>
         <ul class="pain-list stagger reveal">
           <li class="pain-item">
@@ -658,7 +655,7 @@
             </span>
             <div>
               <h3>Hours of mindless repetition</h3>
-              <p>A 500-photo batch means 500 rounds of place, adjust, flatten, save. That is an afternoon of paid work spent doing nothing but clicking 鈥?before the client has seen a single frame.</p>
+              <p>A 500-photo batch means 500 rounds of place, adjust, flatten, save. That is an afternoon of paid work spent doing nothing but clicking — before the client has seen a single frame.</p>
             </div>
           </li>
           <li class="pain-item">
@@ -676,7 +673,7 @@
             </span>
             <div>
               <h3>Manual edits risk the originals</h3>
-              <p>Stamp straight onto the master and one wrong save is permanent. Crop, re-export, deliver 鈥?the clean source disappears somewhere in the shuffle.</p>
+              <p>Stamp straight onto the master and one wrong save is permanent. Crop, re-export, deliver — the clean source disappears somewhere in the shuffle.</p>
             </div>
           </li>
         </ul>
@@ -697,9 +694,9 @@
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="11.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="2.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="11.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
             </span>
             <h3>Batch stamp with full control</h3>
-            <p>Run once over an entire folder. Dial in <strong>opacity, position, rotation, and tiling</strong> 鈥?one discreet corner mark or a diagonal tile grid across the whole frame 鈥?then apply it to every file at once.</p>
+            <p>Run once over an entire folder. Dial in <strong>opacity, position, rotation, and tiling</strong> — one discreet corner mark or a diagonal tile grid across the whole frame — then apply it to every file at once.</p>
             <div class="chips" aria-hidden="true">
-              <span class="chip">opacity 5鈥?00%</span>
+              <span class="chip">opacity 5–100%</span>
               <span class="chip">9-point position</span>
               <span class="chip">rotation any angle</span>
               <span class="chip">tile / single</span>
@@ -710,21 +707,21 @@
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 13 L7 9.5 L11 12.5 L14 10.5 L17.5 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.5" cy="8" r="1.5" stroke="currentColor" stroke-width="1.4"/></svg>
             </span>
             <h3>Date + logo watermark</h3>
-            <p>Stamp your logo image, an automatic date (today or the photo's EXIF capture date), or both together 鈥?every delivered frame carries your brand and a timestamp.</p>
+            <p>Stamp your logo image, an automatic date (today or the photo's EXIF capture date), or both together — every delivered frame carries your brand and a timestamp.</p>
           </article>
           <article class="card card--half">
             <span class="card-icon" aria-hidden="true">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5 L17 6 L10 9.5 L3 6 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 10 L10 13.5 L17 10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 14 L10 17.5 L17 14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
             </span>
             <h3>Non-destructive, always</h3>
-            <p>The watermark lands on its own layer in a copy of the file. Your originals are never overwritten 鈥?the source folder stays byte-for-byte untouched.</p>
+            <p>The watermark lands on its own layer in a copy of the file. Your originals are never overwritten — the source folder stays byte-for-byte untouched.</p>
           </article>
           <article class="card card--half">
             <span class="card-icon" aria-hidden="true">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3.5" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 16.5 H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M10 13.5 V16.5" stroke="currentColor" stroke-width="1.6"/><path d="M6 8.5 L8.5 11 L14 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
             <h3>Photoshop CC 2018+</h3>
-            <p>A single JSX script that drops into Photoshop CC 2018 or newer 鈥?no plugins, no background services, no extra app to learn. Windows and macOS, identical behavior.</p>
+            <p>A single JSX script that drops into Photoshop CC 2018 or newer — no plugins, no background services, no extra app to learn. Windows and macOS, identical behavior.</p>
           </article>
         </div>
       </div>
@@ -741,7 +738,7 @@
           <li class="step">
             <span class="step-num" aria-hidden="true">01</span>
             <h3>Run the script</h3>
-            <p>In Photoshop: <code>File 鈫?Scripts 鈫?Browse鈥?/code> and pick <code>PhotoStamp-Pro.jsx</code>. It opens as a compact panel 鈥?no installation, no restart.</p>
+            <p>In Photoshop: <code>File → Scripts → Browse…</code> and pick <code>PhotoStamp-Pro.jsx</code>. It opens as a compact panel — no installation, no restart.</p>
           </li>
           <li class="step">
             <span class="step-num" aria-hidden="true">02</span>
@@ -751,7 +748,7 @@
           <li class="step">
             <span class="step-num" aria-hidden="true">03</span>
             <h3>Point it at a folder</h3>
-            <p>Choose the source folder and an output folder. The script walks every photo, stamps it, and writes a copy 鈥?originals left untouched.</p>
+            <p>Choose the source folder and an output folder. The script walks every photo, stamps it, and writes a copy — originals left untouched.</p>
           </li>
         </ol>
       </div>
@@ -762,13 +759,13 @@
         <div class="proof-body reveal">
           <p class="overline">Why it's reliable</p>
           <h2 class="section-title" id="proof-title">Built on the same scripting engine behind Photoshop batch actions.</h2>
-          <p>PhotoStamp Pro is a Photoshop script (JSX) running on ExtendScript 鈥?the automation layer Adobe has shipped inside Photoshop for two decades. It is the engine behind <em>File 鈫?Automate 鈫?Batch</em> and recorded actions, driving the same document, layer, and export objects your own macros use.</p>
-          <p>That means no new runtime to trust, no round-trip through a third-party service, and behavior Photoshop users already understand: open, place, stamp, save a copy. If batch actions have been safe in your workflow for years, this is that machinery 鈥?pointed at watermarking.</p>
+          <p>PhotoStamp Pro is a Photoshop script (JSX) running on ExtendScript — the automation layer Adobe has shipped inside Photoshop for two decades. It is the engine behind <em>File → Automate → Batch</em> and recorded actions, driving the same document, layer, and export objects your own macros use.</p>
+          <p>That means no new runtime to trust, no round-trip through a third-party service, and behavior Photoshop users already understand: open, place, stamp, save a copy. If batch actions have been safe in your workflow for years, this is that machinery — pointed at watermarking.</p>
         </div>
         <aside class="context-box reveal" aria-label="Market context">
           <p class="overline overline--accent">Market context</p>
           <p>Watermarking is an established paid category in the photography niche: <strong>Watermark 3 Pro has sold for $34.90 across the photography niche</strong> and was listed by PCMag among Photoshop plugin picks. PhotoStamp Pro does the same job inside the Photoshop you already open every day, for less than that sticker price.</p>
-          <p class="fineprint">The figures above describe third-party products and the existing market, not PhotoStamp Pro sales.</p>
+          <p class="fineprint">The figures above describe third-party products and the existing market — not PhotoStamp Pro sales.</p>
         </aside>
       </div>
     </section>
@@ -778,7 +775,7 @@
       <div class="container">
         <div class="section-head reveal">
           <p class="overline">Pricing</p>
-          <h2 class="section-title" id="pricing-title">One payment 鈥?$29. Yours to keep.</h2>
+          <h2 class="section-title" id="pricing-title">One payment — $29. Yours to keep.</h2>
         </div>
         <div class="pricing-wrap reveal">
           <div class="price-card">
@@ -794,14 +791,14 @@
               </span>
             </div>
             <ul class="incl">
-              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>PhotoStamp-Pro.jsx (v1.0) 鈥?runs from <span class="mono">File 鈫?Scripts</span></span></li>
+              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>PhotoStamp-Pro.jsx (v1.0) — runs from <span class="mono">File → Scripts</span></span></li>
               <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Opacity, position, rotation, and tiling controls</span></li>
               <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Logo + automatic date watermark (EXIF or today)</span></li>
-              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Non-destructive output 鈥?stamped copies, originals untouched</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Non-destructive output — stamped copies, originals untouched</span></li>
               <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>One-page install guide for Windows &amp; macOS</span></li>
             </ul>
-            <a class="btn btn-primary btn-block" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro 鈥?$29</a>
-            <p class="price-note">Instant download 路 Delivered to your Gumroad email 路 Price goes to $49 after launch</p>
+            <a class="btn btn-primary btn-block" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a>
+            <p class="price-note">Instant download · Delivered to your Gumroad email · Price goes to $49 after launch</p>
           </div>
         </div>
       </div>
@@ -817,11 +814,11 @@
         <div class="faq-list reveal">
           <details>
             <summary>Do my photos ever leave my computer?<span class="faq-glyph" aria-hidden="true"></span></summary>
-            <p>No 鈥?100% local. The script runs inside your Photoshop on your machine: no uploads, no telemetry, no account, no phone-home. Your files never touch a server, and this page has no tracking script.</p>
+            <p>No — 100% local. The script runs inside your Photoshop on your machine: no uploads, no telemetry, no account, no phone-home. Your files never touch a server.</p>
           </details>
           <details>
             <summary>Is this a subscription?<span class="faq-glyph" aria-hidden="true"></span></summary>
-            <p>No. One payment 鈥?$29 today, $49 after launch 鈥?and the script is yours. No renewal, no seats, no license server, no login.</p>
+            <p>No. One payment — $29 today, $49 after launch — and the script is yours. No renewal, no seats, no license server, no login.</p>
           </details>
           <details>
             <summary>Windows or Mac?<span class="faq-glyph" aria-hidden="true"></span></summary>
@@ -829,7 +826,7 @@
           </details>
           <details>
             <summary>What exactly do I get?<span class="faq-glyph" aria-hidden="true"></span></summary>
-            <p>PhotoStamp-Pro.jsx (the batch script), Install-Guide.md with setup and troubleshooting, and lifetime updates for v1.x. Download starts the moment you pay 鈥?no waiting, no email round-trip.</p>
+            <p>PhotoStamp-Pro.jsx (the batch script), Install-Guide.md with setup and troubleshooting, and lifetime updates for v1.x. Download starts the moment you pay — no waiting, no email round-trip.</p>
           </details>
         </div>
       </div>
@@ -841,9 +838,9 @@
         <div class="notify-inner reveal">
           <p class="overline">Try before you buy</p>
           <h2 class="section-title" id="lite-title">Free Lite version on GitHub.</h2>
-          <p class="lead muted">PhotoStamp Lite stamps a single open document 鈥?same panel, no folder batch. Free and open source, so you can check the approach before spending anything.</p>
+          <p class="lead muted">PhotoStamp Lite stamps a single open document — same panel, no folder batch. Free and open source, so you can check the approach before spending anything.</p>
           <p class="notify-alt"><a href="https://github.com/skyforrun/photostamp-pro" target="_blank" rel="noopener">Get the free Lite script on GitHub</a></p>
-          <p class="notify-alt">Need the folder batch, presets, tiling, and the install guide? <a href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro 鈥?$29</a></p>
+          <p class="notify-alt">Need the folder batch, presets, tiling, and the install guide? <a href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a></p>
         </div>
       </div>
     </section>
@@ -861,7 +858,7 @@
         </a>
         <p class="footer-legal">Batch watermark script for Photoshop (JSX). One-time price, 100% local.</p>
       </div>
-      <p class="footer-legal">Adobe and Photoshop are trademarks of Adobe Inc. PhotoStamp Pro is an independent script and is not affiliated with, endorsed by, or sponsored by Adobe.<br>漏 2026 PhotoStamp Pro</p>
+      <p class="footer-legal">Adobe and Photoshop are trademarks of Adobe Inc. PhotoStamp Pro is an independent script and is not affiliated with, endorsed by, or sponsored by Adobe.<br>© 2026 PhotoStamp Pro</p>
     </div>
   </footer>
 
@@ -885,4 +882,3 @@
   </script>
 </body>
 </html>
-
