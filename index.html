@@ -1,0 +1,883 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- PhotoStamp Pro — landing page. Product: https://skyforer.gumroad.com/l/photostamp-pro -->
+  <!-- Lite version: https://github.com/skyforrun/photostamp-pro -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#08090a">
+  <title>PhotoStamp Pro 鈥?Batch Watermark Script for Photoshop (JSX)</title>
+  <meta name="description" content="Batch-watermark entire folders in Photoshop in one click. Logo + date, opacity/position/rotation/tile, non-destructive. One-time $29, instant download.">
+  <meta property="og:title" content="PhotoStamp Pro 鈥?Batch-watermark 500 photos in Photoshop in one click">
+  <meta property="og:description" content="A Photoshop script (JSX) that stamps every photo in a folder: opacity, position, rotation, tiling. 100% local, one-time $29.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308090a'/%3E%3Crect x='6.5' y='6.5' width='19' height='19' rx='5' fill='none' stroke='%235e6ad2' stroke-width='2'/%3E%3Cpath d='M11 19.5 L19.5 11 M14.5 22 L22 14.5' stroke='%235e6ad2' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    /* ============ Design tokens (see DESIGN.md) ============ */
+    :root {
+      --surface-canvas: #08090a;
+      --surface-panel: #0f1011;
+      --surface-elevated: #191a1b;
+      --surface-hover: #28282c;
+      --text-primary: #f7f8f8;
+      --text-secondary: #d0d6e0;
+      --text-muted: #8a8f98;
+      --text-subtle: #62666d;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-subtle: rgba(255, 255, 255, 0.05);
+      --border-solid: #23252a;
+      --accent: #5e6ad2;
+      --accent-hover: #828fff;
+      --accent-link: #7170ff;
+      --accent-frame: rgba(94, 106, 210, 0.35);
+      --success: #10b981;
+      --danger: #f2555a;
+      --glow: rgba(94, 106, 210, 0.16);
+
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+      --space-1: 4px;  --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+      --space-5: 20px; --space-6: 24px;  --space-8: 32px;  --space-10: 40px;
+      --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+
+      --radius-s: 6px; --radius-m: 8px; --radius-l: 12px;
+      --maxw: 1120px; --maxw-text: 680px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ============ Reset & base ============ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--surface-canvas);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, p, ul, ol { margin: 0; }
+    ul, ol { padding: 0; list-style: none; }
+    a { color: var(--accent-link); text-decoration: none; }
+    a:hover { color: var(--accent-hover); }
+    img, svg { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; }
+    :where(a, button, input, summary):focus-visible {
+      outline: 2px solid var(--accent-link);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .container { width: min(100% - 40px, var(--maxw)); margin-inline: auto; }
+    @media (max-width: 480px) { .container { width: min(100% - 32px, var(--maxw)); } }
+
+    .skip-link {
+      position: absolute; left: var(--space-4); top: -60px; z-index: 100;
+      background: var(--accent); color: #fff; padding: 10px 16px;
+      border-radius: var(--radius-s); font-size: 0.875rem; font-weight: 600;
+      transition: top 150ms ease-out;
+    }
+    .skip-link:focus { top: var(--space-4); color: #fff; }
+
+    /* ============ Type helpers ============ */
+    .overline {
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .overline--accent { color: var(--accent-hover); }
+    .display {
+      font-size: clamp(2.25rem, 5.4vw, 3.25rem);
+      font-weight: 600; line-height: 1.06; letter-spacing: -0.025em;
+      color: var(--text-primary);
+    }
+    h2.section-title {
+      font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+      font-weight: 600; line-height: 1.15; letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-top: var(--space-3);
+    }
+    h3 {
+      font-size: 1.25rem; font-weight: 600;
+      line-height: 1.3; letter-spacing: -0.01em; color: var(--text-primary);
+    }
+    .lead {
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      line-height: 1.6; color: var(--text-secondary);
+    }
+    .small { font-size: 0.9rem; line-height: 1.55; }
+    .muted { color: var(--text-muted); }
+    .section-head { max-width: var(--maxw-text); }
+    .section-head .lead { margin-top: var(--space-4); }
+
+    /* ============ Buttons ============ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+      border-radius: var(--radius-s); border: 1px solid transparent;
+      font-size: 0.9375rem; font-weight: 600; line-height: 1.2;
+      padding: 13px 26px; min-height: 44px;
+      text-align: center; transition: background-color 150ms ease-out, border-color 150ms ease-out, transform 150ms ease-out, color 150ms ease-out;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--accent); color: #ffffff; }
+    .btn-primary:hover { background: var(--accent-hover); color: #ffffff; }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.03); color: #e2e4e7;
+      border-color: var(--border);
+    }
+    .btn-ghost:hover { background: var(--surface-hover); color: var(--text-primary); }
+    .btn-sm { padding: 9px 16px; min-height: 40px; font-size: 0.8125rem; }
+    .btn-block { width: 100%; }
+
+    /* ============ Pill badge ============ */
+    .pill {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      border: 1px solid var(--border-solid); border-radius: 9999px;
+      padding: 5px 12px; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary);
+      background: transparent;
+    }
+    .pill-accent {
+      border-color: rgba(94, 106, 210, 0.5);
+      background: rgba(94, 106, 210, 0.1);
+      color: var(--accent-hover);
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-hover); flex: none; }
+
+    /* ============ Nav ============ */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(8, 9, 10, 0.82);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: 64px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; }
+    .brand:hover { color: var(--text-primary); }
+    .nav-links { display: flex; align-items: center; gap: var(--space-6); }
+    .nav-links a { font-size: 0.84rem; font-weight: 500; color: var(--text-muted); }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-right { display: flex; align-items: center; gap: var(--space-4); }
+    @media (max-width: 760px) { .nav-links { display: none; } }
+    /* ============ Hero ============ */
+    .hero { position: relative; overflow: hidden; padding-block: clamp(56px, 9vw, 104px) clamp(48px, 8vw, 88px); }
+    .hero::before {
+      content: ""; position: absolute; left: 50%; top: -280px;
+      width: min(1100px, 160vw); height: 640px; transform: translateX(-50%);
+      background: radial-gradient(closest-side, var(--glow), transparent 72%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: clamp(32px, 5vw, 64px); align-items: center;
+    }
+    .hero-copy { display: flex; flex-direction: column; gap: var(--space-5); }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3);
+      font-size: 0.8125rem; color: var(--text-muted);
+    }
+    .hero-meta li { display: flex; align-items: center; gap: var(--space-3); }
+    .hero-meta li + li::before { content: "路"; color: var(--text-subtle); }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-copy { max-width: 640px; }
+    }
+
+    /* ============ Hero mock panel (focal object) ============ */
+    .mock {
+      background: var(--surface-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-l);
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+    .mock-chrome {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: 10px 14px; border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .mock-dots { display: flex; gap: 6px; }
+    .mock-dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); }
+    .mock-title {
+      font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mock-meta { margin-left: auto; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-subtle); }
+    .mock-body { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(190px, 1fr); }
+    .mock-canvas {
+      padding: 14px; border-right: 1px solid var(--border-subtle);
+      background-color: #101112;
+      background-image: conic-gradient(#151617 25%, #1b1c1e 0 50%, #151617 0 75%, #1b1c1e 0);
+      background-size: 16px 16px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px; }
+    .tile {
+      position: relative; aspect-ratio: 4 / 3; overflow: hidden;
+      border-radius: var(--radius-s); border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--surface-elevated);
+    }
+    .tile > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .wm {
+      position: absolute; top: -34%; left: -30%; width: 160%; height: 168%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      transform: rotate(-30deg); pointer-events: none;
+    }
+    .wm span {
+      font-family: var(--font-mono); font-size: 7.5px; font-weight: 500;
+      letter-spacing: 0.14em; color: rgba(247, 248, 248, 0.55);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55); white-space: nowrap;
+    }
+    .tile-date {
+      position: absolute; right: 5px; bottom: 5px;
+      font-family: var(--font-mono); font-size: 7.5px; color: rgba(247, 248, 248, 0.85);
+      background: rgba(0, 0, 0, 0.42); padding: 2px 5px; border-radius: 3px;
+      letter-spacing: 0.04em;
+    }
+    .tile-tick {
+      position: absolute; top: 5px; right: 5px; width: 15px; height: 15px;
+      border-radius: 50%; background: var(--success);
+      display: grid; place-items: center;
+    }
+    .tile-tick svg { width: 9px; height: 9px; }
+    .progress-block { display: flex; flex-direction: column; gap: 7px; }
+    .progress-label {
+      display: flex; justify-content: space-between; gap: var(--space-3);
+      font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-muted);
+    }
+    .progress { height: 4px; border-radius: 9999px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+    .progress .fill {
+      display: block; height: 100%; border-radius: inherit; background: var(--accent);
+      transform-origin: left center;
+    }
+    .mock-rail {
+      padding: 14px; display: flex; flex-direction: column; gap: 14px;
+      background: var(--surface-panel);
+    }
+    .rail-label {
+      font-size: 0.625rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-subtle);
+    }
+    .logo-chip {
+      display: flex; align-items: center; gap: 9px;
+      background: var(--surface-elevated); border: 1px solid var(--border);
+      border-radius: var(--radius-s); padding: 8px 10px;
+    }
+    .logo-thumb {
+      width: 26px; height: 26px; border-radius: 4px; flex: none;
+      background: rgba(94, 106, 210, 0.14); border: 1px solid rgba(94, 106, 210, 0.4);
+      display: grid; place-items: center;
+    }
+    .logo-chip b { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 500; color: var(--text-secondary); }
+    .logo-chip em { font-style: normal; font-size: 0.625rem; color: var(--text-subtle); }
+    .ctl { display: flex; flex-direction: column; gap: 7px; }
+    .ctl-head { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); }
+    .ctl-head b { font-family: var(--font-mono); font-weight: 500; color: var(--text-secondary); }
+    .slider { position: relative; height: 4px; border-radius: 9999px; background: rgba(255, 255, 255, 0.1); }
+    .slider .s-fill { position: absolute; inset: 0 auto 0 0; width: 35%; border-radius: inherit; background: var(--accent); }
+    .slider .s-thumb {
+      position: absolute; top: 50%; left: 35%; width: 12px; height: 12px;
+      border-radius: 50%; background: var(--text-primary); border: 2px solid var(--accent);
+      transform: translate(-50%, -50%);
+    }
+    .pos-grid { display: grid; grid-template-columns: repeat(3, 12px); gap: 4px; }
+    .pos-grid i { width: 12px; height: 12px; border-radius: 3px; background: rgba(255, 255, 255, 0.07); }
+    .pos-grid i.on { background: var(--accent); }
+    .ctl-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+    .rot { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); }
+    .toggle {
+      position: relative; width: 34px; height: 18px; border-radius: 9999px;
+      background: var(--accent); flex: none;
+    }
+    .toggle::after {
+      content: ""; position: absolute; top: 2px; right: 2px;
+      width: 14px; height: 14px; border-radius: 50%; background: #fff;
+    }
+    .mock-btn {
+      margin-top: 2px; width: 100%; padding: 9px; border: 0; border-radius: var(--radius-s);
+      background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600; text-align: center;
+    }
+    @media (max-width: 900px) {
+      .mock-body { grid-template-columns: 1fr; }
+      .mock-canvas { border-right: 0; border-bottom: 1px solid var(--border-subtle); }
+      .mock-rail { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+      .mock-rail .rail-label, .mock-rail .logo-chip, .mock-rail .mock-btn { grid-column: 1 / -1; }
+    }
+    @media (max-width: 440px) { .mock-rail { grid-template-columns: 1fr; } }
+    /* ============ Signature motion (hero batch demo) ============ */
+    .js .fill { animation: fillBar 1.5s var(--ease) 0.25s both; }
+    .js .wm, .js .tile-date { animation: stampIn 0.5s ease-out both; }
+    .js .tile:nth-child(1) .wm, .js .tile:nth-child(1) .tile-date { animation-delay: 0.45s; }
+    .js .tile:nth-child(2) .wm, .js .tile:nth-child(2) .tile-date { animation-delay: 0.8s; }
+    .js .tile:nth-child(3) .wm, .js .tile:nth-child(3) .tile-date { animation-delay: 1.15s; }
+    .js .tile-tick { animation: tickIn 0.35s var(--ease) both; }
+    .js .tile:nth-child(1) .tile-tick { animation-delay: 0.85s; }
+    .js .tile:nth-child(2) .tile-tick { animation-delay: 1.2s; }
+    .js .tile:nth-child(3) .tile-tick { animation-delay: 1.55s; }
+    @keyframes fillBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes stampIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes tickIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+    /* ============ Sections ============ */
+    section { padding-block: clamp(48px, 8vw, 96px); }
+    .divider-top { border-top: 1px solid var(--border-subtle); }
+
+    /* Pain */
+    .pain-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 72px); }
+    .pain-list { display: flex; flex-direction: column; }
+    .pain-item { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: var(--space-4); padding-block: var(--space-5); }
+    .pain-item:first-child { padding-top: 0; }
+    .pain-item + .pain-item { border-top: 1px solid var(--border-subtle); }
+    .pain-item p { margin-top: var(--space-2); color: var(--text-muted); font-size: 0.95rem; }
+    .icon-badge {
+      width: 28px; height: 28px; border-radius: var(--radius-s); display: grid; place-items: center;
+      background: rgba(242, 85, 90, 0.1); border: 1px solid rgba(242, 85, 90, 0.3); color: var(--danger);
+    }
+    @media (max-width: 860px) { .pain-grid { grid-template-columns: 1fr; } }
+
+    /* Features bento */
+    .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-10); }
+    .card {
+      background: var(--surface-elevated); border: 1px solid var(--border);
+      border-radius: var(--radius-m); padding: var(--space-6);
+      display: flex; flex-direction: column; gap: var(--space-3);
+    }
+    .card--wide { grid-column: span 4; }
+    .card--side { grid-column: span 2; }
+    .card--half { grid-column: span 3; }
+    .card-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-s);
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+      display: grid; place-items: center; color: var(--text-secondary);
+    }
+    .card p { color: var(--text-muted); font-size: 0.95rem; }
+    .card strong { color: var(--text-secondary); font-weight: 600; }
+    .chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: auto; padding-top: var(--space-2); }
+    .chip {
+      font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle);
+      border-radius: 9999px; padding: 4px 10px;
+    }
+    @media (max-width: 1023px) { .card--wide, .card--side, .card--half { grid-column: span 3; } }
+    @media (max-width: 767px) { .bento { grid-template-columns: 1fr; } .card--wide, .card--side, .card--half { grid-column: auto; } }
+
+    /* Steps */
+    .steps-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin-top: var(--space-10); }
+    .step { border-top: 1px solid var(--border-subtle); padding-top: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); }
+    .step-num { font-family: var(--font-mono); font-size: 1.75rem; color: var(--text-subtle); line-height: 1; }
+    .step p { color: var(--text-muted); font-size: 0.95rem; }
+    .step code {
+      font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-secondary);
+      background: var(--surface-elevated); border: 1px solid var(--border-subtle);
+      border-radius: 4px; padding: 1px 6px; white-space: nowrap;
+    }
+    @media (max-width: 899px) { .steps-grid { grid-template-columns: 1fr; gap: var(--space-5); } }
+
+    /* Proof band */
+    .band { background: var(--surface-panel); border-block: 1px solid var(--border-subtle); }
+    .proof-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: start; }
+    .proof-body { display: flex; flex-direction: column; gap: var(--space-4); max-width: var(--maxw-text); }
+    .proof-body p { color: var(--text-secondary); }
+    .context-box {
+      background: rgba(94, 106, 210, 0.06);
+      border: 1px solid var(--accent-frame);
+      border-left-width: 3px;
+      border-radius: var(--radius-s);
+      padding: var(--space-5);
+      display: flex; flex-direction: column; gap: var(--space-3);
+    }
+    .context-box p { font-size: 0.9rem; color: var(--text-secondary); }
+    .context-box strong { color: var(--text-primary); font-weight: 600; }
+    .fineprint { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+    @media (max-width: 860px) { .proof-grid { grid-template-columns: 1fr; } }
+
+    /* Pricing */
+    .pricing-wrap { display: flex; justify-content: center; margin-top: var(--space-10); }
+    .price-card {
+      width: min(100%, 540px);
+      background: var(--surface-elevated);
+      border: 1px solid var(--accent-frame);
+      border-radius: var(--radius-l);
+      padding: clamp(24px, 4vw, 40px);
+      display: flex; flex-direction: column; gap: var(--space-5);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    }
+    .price-row { display: flex; align-items: baseline; gap: var(--space-4); flex-wrap: wrap; }
+    .price-now { font-family: var(--font-mono); font-size: clamp(2.75rem, 7vw, 3.5rem); font-weight: 500; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1; }
+    .price-side { display: flex; flex-direction: column; gap: 2px; }
+    .price-was { font-family: var(--font-mono); font-size: 1.05rem; color: var(--text-muted); text-decoration: line-through; }
+    .price-side small { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+    .incl { display: flex; flex-direction: column; gap: var(--space-3); }
+    .incl li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: var(--space-3); font-size: 0.95rem; color: var(--text-secondary); }
+    .incl svg { margin-top: 4px; color: var(--success); }
+    .price-note { text-align: center; font-size: 0.8125rem; color: var(--text-muted); }
+
+    /* FAQ */
+    .faq-list { max-width: 760px; margin-top: var(--space-8); }
+    details { border-bottom: 1px solid var(--border-subtle); }
+    summary {
+      list-style: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+      padding: var(--space-5) 0; min-height: 44px;
+      font-size: 1.02rem; font-weight: 600; color: var(--text-secondary);
+      transition: color 150ms ease-out;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary:hover { color: var(--text-primary); }
+    .faq-glyph { flex: none; width: 20px; height: 20px; position: relative; color: var(--text-muted); }
+    .faq-glyph::before, .faq-glyph::after {
+      content: ""; position: absolute; inset: 0; margin: auto;
+      background: currentColor; transition: transform 150ms ease-out, opacity 150ms ease-out;
+    }
+    .faq-glyph::before { width: 14px; height: 1.5px; }
+    .faq-glyph::after { width: 1.5px; height: 14px; }
+    details[open] summary { color: var(--text-primary); }
+    details[open] .faq-glyph::after { transform: rotate(90deg); opacity: 0; }
+    details p { padding: 0 0 var(--space-5); color: var(--text-muted); font-size: 0.95rem; max-width: 66ch; }
+
+    /* Notify */
+    .notify-inner { max-width: 560px; margin-inline: auto; text-align: center; display: flex; flex-direction: column; gap: var(--space-5); align-items: center; }
+    .notify-form { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); }
+    .notify-form input[type="email"] {
+      width: 100%; min-height: 46px; padding: 12px 16px;
+      background: var(--surface-elevated); border: 1px solid var(--border);
+      border-radius: var(--radius-s); color: var(--text-primary);
+      font: inherit; font-size: 0.95rem;
+      transition: border-color 150ms ease-out, outline-color 150ms ease-out;
+    }
+    .notify-form input[type="email"]::placeholder { color: var(--text-muted); }
+    .notify-form input[type="email"]:hover { border-color: rgba(255, 255, 255, 0.16); }
+    .notify-form input[type="email"]:focus {
+      outline: 2px solid rgba(113, 112, 255, 0.35); outline-offset: 0;
+      border-color: var(--accent);
+    }
+    .notify-micro { font-size: 0.8125rem; color: var(--text-muted); }
+    .notify-alt { font-size: 0.9rem; color: var(--text-muted); }
+    .notify-alt a { font-weight: 600; }
+    @media (max-width: 560px) {
+      .notify-form { grid-template-columns: 1fr; }
+      .notify-form .btn { width: 100%; }
+    }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border-subtle); padding-block: var(--space-8); }
+    .footer-inner { display: flex; flex-wrap: wrap; gap: var(--space-5); justify-content: space-between; align-items: flex-start; }
+    .footer-legal { max-width: 640px; font-size: 0.75rem; line-height: 1.55; color: var(--text-muted); }
+    .footer-inner .brand + .footer-legal { margin-top: var(--space-3); }
+
+    /* ============ Scroll reveal ============ */
+    .js .reveal:not(.stagger) { opacity: 0; transform: translateY(14px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+    .js .reveal.in:not(.stagger) { opacity: 1; transform: none; }
+    .js .stagger > * { opacity: 0; transform: translateY(14px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+    .js .stagger.in > * { opacity: 1; transform: none; }
+    .js .stagger.in > *:nth-child(2) { transition-delay: 80ms; }
+    .js .stagger.in > *:nth-child(3) { transition-delay: 160ms; }
+    .js .stagger.in > *:nth-child(4) { transition-delay: 240ms; }
+    .js .stagger.in > *:nth-child(5) { transition-delay: 320ms; }
+
+    /* ============ Reduced motion ============ */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .reveal, .js .stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .js .fill, .js .wm, .js .tile-date, .js .tile-tick { animation: none !important; }
+      .btn, summary, a { transition: none !important; }
+    }
+  </style>
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#main" aria-label="PhotoStamp Pro home">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="#5e6ad2" stroke-width="1.75"/>
+          <path d="M7 16.5 L16.5 7 M11 18.5 L18.5 11" stroke="#5e6ad2" stroke-width="1.75" stroke-linecap="round"/>
+        </svg>
+        PhotoStamp Pro
+      </a>
+      <nav class="nav-links" aria-label="Page sections">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#proof">Why it works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-right">
+        <a class="btn btn-primary btn-sm" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get it 鈥?$29</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ================= HERO ================= -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="hero-pills">
+            <span class="pill pill-accent"><span class="dot" aria-hidden="true"></span>Instant download 鈥?$29</span>
+            <span class="pill">Photoshop script 路 JSX</span>
+          </div>
+          <h1 class="display" id="hero-title">Batch-watermark 500 photos in Photoshop in one click.</h1>
+          <p class="lead">PhotoStamp Pro stamps your logo, brand name, or date across an entire folder 鈥?opacity, position, rotation, and tiling under your control. Set it once, run it, and walk away.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro 鈥?$29</a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+          <ul class="hero-meta">
+            <li>One-time payment</li>
+            <li>No subscription</li>
+            <li>Instant download</li>
+            <li>Windows &amp; macOS</li>
+          </ul>
+        </div>
+
+        <!-- Decorative product demo: every claim here is repeated as text in the sections below -->
+        <div class="mock" aria-hidden="true">
+          <div class="mock-chrome">
+            <span class="mock-dots"><i></i><i></i><i></i></span>
+            <span class="mock-title">PhotoStamp Pro.jsx 鈥?batch run</span>
+            <span class="mock-meta">512 imgs</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-canvas">
+              <div class="tiles">
+                <div class="tile">
+                  <svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <defs><linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#2b3a5f"/><stop offset="1" stop-color="#6b5a7a"/>
+                    </linearGradient></defs>
+                    <rect width="160" height="110" fill="url(#skyA)"/>
+                    <circle cx="114" cy="36" r="13" fill="#e0a86c" opacity="0.9"/>
+                    <path d="M0 80 L44 44 L88 80 Z" fill="#1b2340"/>
+                    <path d="M54 84 L100 50 L150 84 Z" fill="#141a33"/>
+                    <rect y="84" width="160" height="26" fill="#0d1122"/>
+                  </svg>
+                  <div class="wm"><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span></div>
+                  <span class="tile-date">2026-10-05</span>
+                  <span class="tile-tick"><svg viewBox="0 0 10 10" fill="none"><path d="M1.8 5.2 L4 7.4 L8.2 2.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </div>
+                <div class="tile">
+                  <svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <defs><linearGradient id="skyB" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#16324a"/><stop offset="1" stop-color="#2e6a74"/>
+                    </linearGradient></defs>
+                    <rect width="160" height="110" fill="url(#skyB)"/>
+                    <circle cx="42" cy="30" r="9" fill="#d8e2e8" opacity="0.85"/>
+                    <rect y="62" width="160" height="48" fill="#0f2a38"/>
+                    <path d="M0 62 H160" stroke="#7fd0d8" stroke-width="1.5" opacity="0.5"/>
+                    <path d="M10 74 Q 30 70 50 74 T 90 74 T 130 74 T 170 74" stroke="#3f7f8c" stroke-width="2" fill="none" opacity="0.7"/>
+                    <path d="M0 88 Q 30 84 60 88 T 120 88 T 180 88" stroke="#356b78" stroke-width="2" fill="none" opacity="0.6"/>
+                  </svg>
+                  <div class="wm"><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span></div>
+                  <span class="tile-date">2026-10-05</span>
+                  <span class="tile-tick"><svg viewBox="0 0 10 10" fill="none"><path d="M1.8 5.2 L4 7.4 L8.2 2.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </div>
+                <div class="tile">
+                  <svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <defs><linearGradient id="skyC" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#1a1f33"/><stop offset="1" stop-color="#3a4463"/>
+                    </linearGradient></defs>
+                    <rect width="160" height="110" fill="url(#skyC)"/>
+                    <circle cx="126" cy="26" r="10" fill="#cfd6ea" opacity="0.9"/>
+                    <circle cx="131" cy="23" r="9" fill="#1a1f33"/>
+                    <path d="M0 78 L36 46 L70 78 Z" fill="#12162a"/>
+                    <path d="M46 82 L88 44 L134 82 Z" fill="#0d1020"/>
+                    <path d="M100 84 L134 56 L160 84 Z" fill="#171c33"/>
+                    <rect y="84" width="160" height="26" fill="#0a0d1a"/>
+                  </svg>
+                  <div class="wm"><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span><span>漏 YOUR STUDIO</span></div>
+                  <span class="tile-date">2026-10-05</span>
+                  <span class="tile-tick"><svg viewBox="0 0 10 10" fill="none"><path d="M1.8 5.2 L4 7.4 L8.2 2.8" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </div>
+              </div>
+              <div class="progress-block">
+                <div class="progress-label"><span>stamping IMG_0419.jpg 鈫?/stamped</span><span>512 / 512</span></div>
+                <div class="progress"><i class="fill"></i></div>
+              </div>
+            </div>
+            <div class="mock-rail">
+              <span class="rail-label">Watermark</span>
+              <div class="logo-chip">
+                <span class="logo-thumb">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" stroke="#828fff" stroke-width="2"/><path d="M8 16 L16 8" stroke="#828fff" stroke-width="2" stroke-linecap="round"/></svg>
+                </span>
+                <span><b>logo_stamp.png</b><br><em>PNG 路 1200 px</em></span>
+              </div>
+              <div class="ctl">
+                <div class="ctl-head"><span>Opacity</span><b>35%</b></div>
+                <div class="slider"><span class="s-fill"></span><span class="s-thumb"></span></div>
+              </div>
+              <div class="ctl-row">
+                <div class="ctl">
+                  <div class="ctl-head"><span>Position</span></div>
+                  <div class="pos-grid"><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+                </div>
+                <div class="ctl">
+                  <div class="ctl-head"><span>Rotation</span></div>
+                  <div class="rot">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10 a6 6 0 1 1 2 4.5" stroke="#7170ff" stroke-width="1.6" stroke-linecap="round"/><path d="M4 6.5 V10.5 H8" stroke="#7170ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    鈭?0掳
+                  </div>
+                </div>
+              </div>
+              <div class="ctl-row">
+                <div class="ctl-head"><span>Tiling</span></div>
+                <span class="toggle"></span>
+              </div>
+              <div class="mock-btn">Stamp folder</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ================= PAIN ================= -->
+    <section id="pain" class="divider-top" aria-labelledby="pain-title">
+      <div class="container pain-grid">
+        <div class="section-head reveal">
+          <p class="overline">The problem</p>
+          <h2 class="section-title" id="pain-title">Still stamping photos one at a time?</h2>
+          <p class="lead muted">Every delivery cycle, the same ritual: open, place, opacity, rotate, save, repeat. It doesn't scale past a handful of files 鈥?and skipping it is how images walk away.</p>
+        </div>
+        <ul class="pain-list stagger reveal">
+          <li class="pain-item">
+            <span class="icon-badge" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 3.5 L10.5 10.5 M10.5 3.5 L3.5 10.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+            </span>
+            <div>
+              <h3>Hours of mindless repetition</h3>
+              <p>A 500-photo batch means 500 rounds of place, adjust, flatten, save. That is an afternoon of paid work spent doing nothing but clicking 鈥?before the client has seen a single frame.</p>
+            </div>
+          </li>
+          <li class="pain-item">
+            <span class="icon-badge" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 3.5 L10.5 10.5 M10.5 3.5 L3.5 10.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+            </span>
+            <div>
+              <h3>Unstamped previews get stolen</h3>
+              <p>Clean files are the ones that get lifted, reposted, and resold. Once a watermark is missing from a batch, tracing your own work back to the thief becomes your problem instead of theirs.</p>
+            </div>
+          </li>
+          <li class="pain-item">
+            <span class="icon-badge" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 3.5 L10.5 10.5 M10.5 3.5 L3.5 10.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+            </span>
+            <div>
+              <h3>Manual edits risk the originals</h3>
+              <p>Stamp straight onto the master and one wrong save is permanent. Crop, re-export, deliver 鈥?the clean source disappears somewhere in the shuffle.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= WHAT YOU GET ================= -->
+    <section id="features" class="divider-top" aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="overline">What you get</p>
+          <h2 class="section-title" id="features-title">Everything you need to stamp a folder, nothing you don't.</h2>
+          <p class="lead muted">Built for photographers clearing a weekend shoot and e-commerce studios pushing hundreds of product shots a week.</p>
+        </div>
+        <div class="bento stagger reveal">
+          <article class="card card--wide">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="11.5" y="2.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="2.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="11.5" y="11.5" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+            </span>
+            <h3>Batch stamp with full control</h3>
+            <p>Run once over an entire folder. Dial in <strong>opacity, position, rotation, and tiling</strong> 鈥?one discreet corner mark or a diagonal tile grid across the whole frame 鈥?then apply it to every file at once.</p>
+            <div class="chips" aria-hidden="true">
+              <span class="chip">opacity 5鈥?00%</span>
+              <span class="chip">9-point position</span>
+              <span class="chip">rotation any angle</span>
+              <span class="chip">tile / single</span>
+            </div>
+          </article>
+          <article class="card card--side">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="4.5" width="15" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 13 L7 9.5 L11 12.5 L14 10.5 L17.5 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.5" cy="8" r="1.5" stroke="currentColor" stroke-width="1.4"/></svg>
+            </span>
+            <h3>Date + logo watermark</h3>
+            <p>Stamp your logo image, an automatic date (today or the photo's EXIF capture date), or both together 鈥?every delivered frame carries your brand and a timestamp.</p>
+          </article>
+          <article class="card card--half">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2.5 L17 6 L10 9.5 L3 6 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 10 L10 13.5 L17 10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 14 L10 17.5 L17 14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Non-destructive, always</h3>
+            <p>The watermark lands on its own layer in a copy of the file. Your originals are never overwritten 鈥?the source folder stays byte-for-byte untouched.</p>
+          </article>
+          <article class="card card--half">
+            <span class="card-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="3.5" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7 16.5 H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M10 13.5 V16.5" stroke="currentColor" stroke-width="1.6"/><path d="M6 8.5 L8.5 11 L14 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Photoshop CC 2018+</h3>
+            <p>A single JSX script that drops into Photoshop CC 2018 or newer 鈥?no plugins, no background services, no extra app to learn. Windows and macOS, identical behavior.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3 STEPS ================= -->
+    <section id="how" class="divider-top" aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="overline">How it works</p>
+          <h2 class="section-title" id="how-title">Three steps to a stamped folder.</h2>
+        </div>
+        <ol class="steps-grid stagger reveal">
+          <li class="step">
+            <span class="step-num" aria-hidden="true">01</span>
+            <h3>Run the script</h3>
+            <p>In Photoshop: <code>File 鈫?Scripts 鈫?Browse鈥?/code> and pick <code>PhotoStamp-Pro.jsx</code>. It opens as a compact panel 鈥?no installation, no restart.</p>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">02</span>
+            <h3>Set your stamp</h3>
+            <p>Load your logo or turn on the date, then set opacity, position, rotation, and tiling. Save the setup as a preset and the next batch takes one click.</p>
+          </li>
+          <li class="step">
+            <span class="step-num" aria-hidden="true">03</span>
+            <h3>Point it at a folder</h3>
+            <p>Choose the source folder and an output folder. The script walks every photo, stamps it, and writes a copy 鈥?originals left untouched.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+    <!-- ================= PROOF ================= -->
+    <section id="proof" class="band" aria-labelledby="proof-title">
+      <div class="container proof-grid">
+        <div class="proof-body reveal">
+          <p class="overline">Why it's reliable</p>
+          <h2 class="section-title" id="proof-title">Built on the same scripting engine behind Photoshop batch actions.</h2>
+          <p>PhotoStamp Pro is a Photoshop script (JSX) running on ExtendScript 鈥?the automation layer Adobe has shipped inside Photoshop for two decades. It is the engine behind <em>File 鈫?Automate 鈫?Batch</em> and recorded actions, driving the same document, layer, and export objects your own macros use.</p>
+          <p>That means no new runtime to trust, no round-trip through a third-party service, and behavior Photoshop users already understand: open, place, stamp, save a copy. If batch actions have been safe in your workflow for years, this is that machinery 鈥?pointed at watermarking.</p>
+        </div>
+        <aside class="context-box reveal" aria-label="Market context">
+          <p class="overline overline--accent">Market context</p>
+          <p>Watermarking is an established paid category in the photography niche: <strong>Watermark 3 Pro has sold for $34.90 across the photography niche</strong> and was listed by PCMag among Photoshop plugin picks. PhotoStamp Pro does the same job inside the Photoshop you already open every day, for less than that sticker price.</p>
+          <p class="fineprint">The figures above describe third-party products and the existing market, not PhotoStamp Pro sales.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= PRICING ================= -->
+    <section id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="overline">Pricing</p>
+          <h2 class="section-title" id="pricing-title">One payment 鈥?$29. Yours to keep.</h2>
+        </div>
+        <div class="pricing-wrap reveal">
+          <div class="price-card">
+            <div class="hero-pills">
+              <span class="pill pill-accent">Instant download</span>
+              <span class="pill">Lifetime v1.x updates</span>
+            </div>
+            <div class="price-row">
+              <span class="price-now">$29</span>
+              <span class="price-side">
+                <span class="price-was">$49</span>
+                <small>Regular price after launch</small>
+              </span>
+            </div>
+            <ul class="incl">
+              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>PhotoStamp-Pro.jsx (v1.0) 鈥?runs from <span class="mono">File 鈫?Scripts</span></span></li>
+              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Opacity, position, rotation, and tiling controls</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Logo + automatic date watermark (EXIF or today)</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Non-destructive output 鈥?stamped copies, originals untouched</span></li>
+              <li><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7.5 L5.5 10.5 L11.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>One-page install guide for Windows &amp; macOS</span></li>
+            </ul>
+            <a class="btn btn-primary btn-block" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro 鈥?$29</a>
+            <p class="price-note">Instant download 路 Delivered to your Gumroad email 路 Price goes to $49 after launch</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section id="faq" class="divider-top" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="overline">FAQ</p>
+          <h2 class="section-title" id="faq-title">Straight answers.</h2>
+        </div>
+        <div class="faq-list reveal">
+          <details>
+            <summary>Do my photos ever leave my computer?<span class="faq-glyph" aria-hidden="true"></span></summary>
+            <p>No 鈥?100% local. The script runs inside your Photoshop on your machine: no uploads, no telemetry, no account, no phone-home. Your files never touch a server, and this page has no tracking script.</p>
+          </details>
+          <details>
+            <summary>Is this a subscription?<span class="faq-glyph" aria-hidden="true"></span></summary>
+            <p>No. One payment 鈥?$29 today, $49 after launch 鈥?and the script is yours. No renewal, no seats, no license server, no login.</p>
+          </details>
+          <details>
+            <summary>Windows or Mac?<span class="faq-glyph" aria-hidden="true"></span></summary>
+            <p>Both. PhotoStamp Pro runs in Photoshop CC 2018 or later on Windows and macOS, with identical behavior on either platform.</p>
+          </details>
+          <details>
+            <summary>What exactly do I get?<span class="faq-glyph" aria-hidden="true"></span></summary>
+            <p>PhotoStamp-Pro.jsx (the batch script), Install-Guide.md with setup and troubleshooting, and lifetime updates for v1.x. Download starts the moment you pay 鈥?no waiting, no email round-trip.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EMAIL CAPTURE ================= -->
+    <section id="lite" class="band" aria-labelledby="lite-title">
+      <div class="container">
+        <div class="notify-inner reveal">
+          <p class="overline">Try before you buy</p>
+          <h2 class="section-title" id="lite-title">Free Lite version on GitHub.</h2>
+          <p class="lead muted">PhotoStamp Lite stamps a single open document 鈥?same panel, no folder batch. Free and open source, so you can check the approach before spending anything.</p>
+          <p class="notify-alt"><a href="https://github.com/skyforrun/photostamp-pro" target="_blank" rel="noopener">Get the free Lite script on GitHub</a></p>
+          <p class="notify-alt">Need the folder batch, presets, tiling, and the install guide? <a href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro 鈥?$29</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <a class="brand" href="#main">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5" stroke="#5e6ad2" stroke-width="1.75"/>
+            <path d="M7 16.5 L16.5 7 M11 18.5 L18.5 11" stroke="#5e6ad2" stroke-width="1.75" stroke-linecap="round"/>
+          </svg>
+          PhotoStamp Pro
+        </a>
+        <p class="footer-legal">Batch watermark script for Photoshop (JSX). One-time price, 100% local.</p>
+      </div>
+      <p class="footer-legal">Adobe and Photoshop are trademarks of Adobe Inc. PhotoStamp Pro is an independent script and is not affiliated with, endorsed by, or sponsored by Adobe.<br>漏 2026 PhotoStamp Pro</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var els = document.querySelectorAll(".reveal");
+      if (!("IntersectionObserver" in window)) {
+        els.forEach(function (el) { el.classList.add("in"); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
+
