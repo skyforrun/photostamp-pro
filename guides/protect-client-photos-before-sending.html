@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Protecting client photos before you send previews | PhotoStamp</title>
+<meta name="description" content="What actually discourages image theft on client previews: tiled watermarks, downscaling, metadata, and why a corner mark alone rarely helps.">
+<link rel="canonical" href="https://skyforrun.github.io/photostamp-pro/guides/protect-client-photos-before-sending.html">
+<meta property="og:title" content="Protecting client photos before you send previews">
+<meta property="og:description" content="What actually discourages image theft on client previews: tiled watermarks, downscaling, metadata, and why a corner mark alone rarely helps.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://skyforrun.github.io/photostamp-pro/cover-square.png">
+<style>
+:root{--bg:#08090a;--panel:#101214;--text:#eef1f5;--muted:#98a2b3;--accent:#4b8bff;--border:rgba(255,255,255,.09)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 -apple-system,"Segoe UI",Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:56px 22px 96px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:34px}
+.brand a{color:var(--muted)}
+h1{font-size:38px;line-height:1.15;margin:0 0 18px;letter-spacing:-.02em}
+h2{font-size:20px;margin:34px 0 8px}
+p{margin:0 0 16px;color:#d6dde7}
+.intro{font-size:19px;color:#c3ccd9}
+.note{border-left:3px solid var(--accent);background:rgba(75,139,255,.07);padding:14px 18px;border-radius:0 8px 8px 0;margin:26px 0;color:#c9d5e6}
+details{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:var(--panel)}
+summary{cursor:pointer;font-weight:600}
+details p{margin:10px 0 0;color:var(--muted)}
+.cta{margin:48px 0;padding:26px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#111820,#0b0f14)}
+.cta h2{margin-top:0}
+.btn{display:inline-block;background:var(--accent);color:#06101f;font-weight:700;padding:12px 20px;border-radius:10px;margin-top:6px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.meta{font-size:13px;color:var(--muted)}
+ul.rel{padding-left:20px}
+footer{margin-top:56px;border-top:1px solid var(--border);padding-top:20px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><a href="../">PhotoStamp</a> · Photoshop automation guides</div>
+  <h1>Protecting client photos before sending previews</h1>
+  <p class="intro">Watermarks deter casual reuse; they do not prevent theft. What they do buy you is a clear signal of ownership and a paper trail if an image turns up somewhere it should not.</p>
+  <div class="note">A watermark on a preview is not DRM. It raises the cost of misuse from "free" to "visible", which is usually enough.</div>
+        <h2>1. Tile, do not corner-mark</h2>
+        <p>A single corner mark is cropped off in one gesture. A low-opacity diagonal pattern survives cropping, resizing, and screenshotting.</p>
+        <h2>2. Downscale to what the client needs</h2>
+        <p>A 1600px preview is enough to judge a photo and not enough to print. Do not send full-resolution files for approval.</p>
+        <h2>3. Strip or keep metadata deliberately</h2>
+        <p>GPS and camera serial numbers in delivered previews are a privacy issue. Decide per client whether to strip.</p>
+        <h2>4. Keep the delivered filenames traceable</h2>
+        <p>Include a client or job code. If a file leaks, the code identifies which delivery it came from.</p>
+        <h2>5. Log what you sent</h2>
+        <p>Date, file count, mark style. If a dispute happens six months later, that log is the evidence.</p>
+  <div class="cta">
+    <h2>Do it in one click instead</h2>
+    <p>PhotoStamp Pro is a Photoshop script that batch-watermarks a whole folder: logo or date, opacity, position, rotation, tiling, written to copies. One-time $29, instant download.</p>
+    <a class="btn" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a>
+    <p class="meta" style="margin-top:12px">Free Lite version (MIT) on <a href="https://github.com/skyforrun/photostamp-pro" target="_blank" rel="noopener">GitHub</a>.</p>
+  </div>
+  <h2>Related guides</h2>
+  <ul class="rel">
+        <li><a href="../guides/batch-watermark-folder-photoshop.html">How to batch watermark a folder of photos in Photoshop</a></li>
+        <li><a href="../guides/watermark-multiple-photos-at-once.html">Watermark multiple photos at once (without wrecking the originals)</a></li>
+        <li><a href="../guides/photoshop-action-watermark-batch-limits.html">Why Photoshop actions fail at watermarking (and what to do instead)</a></li>
+  </ul>
+  <h2>Questions</h2>
+        <details><summary>What opacity works for a tile?</summary><p>Around 20-35%. Higher ruins the preview, lower disappears after compression.</p></details>
+        <details><summary>Should the mark cover faces?</summary><p>No — clients reject previews where the mark obscures the subject. Tile behind, not across, faces where possible.</p></details>
+        <details><summary>Is a logo enough, or do I need a copyright line?</summary><p>A logo identifies you; a small copyright line identifies the year and the claim. Both, on previews.</p></details>
+  <footer>
+    <a href="../">Home</a> · <a href="https://skyforer.gumroad.com/l/photostamp-pro">Product</a> · <a href="https://github.com/skyforrun/photostamp-pro">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
