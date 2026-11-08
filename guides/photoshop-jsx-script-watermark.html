@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing a Photoshop JSX script to watermark a folder | PhotoStamp</title>
+<meta name="description" content="The ExtendScript skeleton for a folder watermarking script: prompts, the file loop, per-file error handling, and writing to a separate output folder.">
+<link rel="canonical" href="https://skyforrun.github.io/photostamp-pro/guides/photoshop-jsx-script-watermark.html">
+<meta property="og:title" content="Writing a Photoshop JSX script to watermark a folder">
+<meta property="og:description" content="The ExtendScript skeleton for a folder watermarking script: prompts, the file loop, per-file error handling, and writing to a separate output folder.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://skyforrun.github.io/photostamp-pro/cover-square.png">
+<style>
+:root{--bg:#08090a;--panel:#101214;--text:#eef1f5;--muted:#98a2b3;--accent:#4b8bff;--border:rgba(255,255,255,.09)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 -apple-system,"Segoe UI",Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:56px 22px 96px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:34px}
+.brand a{color:var(--muted)}
+h1{font-size:38px;line-height:1.15;margin:0 0 18px;letter-spacing:-.02em}
+h2{font-size:20px;margin:34px 0 8px}
+p{margin:0 0 16px;color:#d6dde7}
+.intro{font-size:19px;color:#c3ccd9}
+.note{border-left:3px solid var(--accent);background:rgba(75,139,255,.07);padding:14px 18px;border-radius:0 8px 8px 0;margin:26px 0;color:#c9d5e6}
+details{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:var(--panel)}
+summary{cursor:pointer;font-weight:600}
+details p{margin:10px 0 0;color:var(--muted)}
+.cta{margin:48px 0;padding:26px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#111820,#0b0f14)}
+.cta h2{margin-top:0}
+.btn{display:inline-block;background:var(--accent);color:#06101f;font-weight:700;padding:12px 20px;border-radius:10px;margin-top:6px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.meta{font-size:13px;color:var(--muted)}
+ul.rel{padding-left:20px}
+footer{margin-top:56px;border-top:1px solid var(--border);padding-top:20px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><a href="../">PhotoStamp</a> · Photoshop automation guides</div>
+  <h1>The anatomy of a Photoshop watermark script (JSX)</h1>
+  <p class="intro">A watermark script is four parts: a small UI that collects settings, a loop over files, a stamping routine that works on one document, and error handling so one bad file does not end the run.</p>
+  <div class="note">ExtendScript is old JavaScript, not modern JS. No arrow functions, no template literals, no let/const in older builds — write ES3-compatible code and it will run everywhere.</div>
+        <h2>1. Collect settings first</h2>
+        <p>Use a ScriptUI dialog to gather the logo path, output folder, opacity, position, and an on/off for the date. Ask once, before touching any file.</p>
+        <h2>2. Loop the folder, not the open documents</h2>
+        <p>Folder.getFiles with an extension filter gives you the list. Loop it, open each file, stamp, save a copy, close without saving the original.</p>
+        <h2>3. Wrap each file in try/catch</h2>
+        <p>A corrupt file or a locked one should not abort the batch. Catch per file, log the name and message, continue.</p>
+        <h2>4. Write to a separate output folder</h2>
+        <p>Never Save As over the input path. Derive an output name with a suffix and create the folder if missing.</p>
+        <h2>5. Write a log</h2>
+        <p>A plain text log in the output folder is the difference between "the batch worked" and knowing which three files failed.</p>
+  <div class="cta">
+    <h2>Do it in one click instead</h2>
+    <p>PhotoStamp Pro is a Photoshop script that batch-watermarks a whole folder: logo or date, opacity, position, rotation, tiling, written to copies. One-time $29, instant download.</p>
+    <a class="btn" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a>
+    <p class="meta" style="margin-top:12px">Free Lite version (MIT) on <a href="https://github.com/skyforrun/photostamp-pro" target="_blank" rel="noopener">GitHub</a>.</p>
+  </div>
+  <h2>Related guides</h2>
+  <ul class="rel">
+        <li><a href="../guides/batch-watermark-folder-photoshop.html">How to batch watermark a folder of photos in Photoshop</a></li>
+        <li><a href="../guides/watermark-multiple-photos-at-once.html">Watermark multiple photos at once (without wrecking the originals)</a></li>
+        <li><a href="../guides/photoshop-action-watermark-batch-limits.html">Why Photoshop actions fail at watermarking (and what to do instead)</a></li>
+  </ul>
+  <h2>Questions</h2>
+        <details><summary>Where do scripts go?</summary><p>Anywhere — File &gt; Scripts &gt; Browse. To add a menu entry, copy it into Presets/Scripts.</p></details>
+        <details><summary>Does it work on Mac and Windows?</summary><p>Yes, as long as paths are built with Folder/File objects rather than string concatenation.</p></details>
+        <details><summary>Can I sell a script I wrote?</summary><p>Yes. A single-file tool has no runtime dependency, which makes distribution trivial.</p></details>
+  <footer>
+    <a href="../">Home</a> · <a href="https://skyforer.gumroad.com/l/photostamp-pro">Product</a> · <a href="https://github.com/skyforrun/photostamp-pro">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
