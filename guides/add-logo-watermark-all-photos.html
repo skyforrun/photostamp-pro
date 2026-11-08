@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add a logo watermark to all photos in a folder (Photoshop) | PhotoStamp</title>
+<meta name="description" content="Step-by-step: place one logo across an entire folder of photos, keep it proportional, and avoid the stretched-mark problem.">
+<link rel="canonical" href="https://skyforrun.github.io/photostamp-pro/guides/add-logo-watermark-all-photos.html">
+<meta property="og:title" content="Add a logo watermark to all photos in a folder (Photoshop)">
+<meta property="og:description" content="Step-by-step: place one logo across an entire folder of photos, keep it proportional, and avoid the stretched-mark problem.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://skyforrun.github.io/photostamp-pro/cover-square.png">
+<style>
+:root{--bg:#08090a;--panel:#101214;--text:#eef1f5;--muted:#98a2b3;--accent:#4b8bff;--border:rgba(255,255,255,.09)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 -apple-system,"Segoe UI",Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:56px 22px 96px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:34px}
+.brand a{color:var(--muted)}
+h1{font-size:38px;line-height:1.15;margin:0 0 18px;letter-spacing:-.02em}
+h2{font-size:20px;margin:34px 0 8px}
+p{margin:0 0 16px;color:#d6dde7}
+.intro{font-size:19px;color:#c3ccd9}
+.note{border-left:3px solid var(--accent);background:rgba(75,139,255,.07);padding:14px 18px;border-radius:0 8px 8px 0;margin:26px 0;color:#c9d5e6}
+details{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:var(--panel)}
+summary{cursor:pointer;font-weight:600}
+details p{margin:10px 0 0;color:var(--muted)}
+.cta{margin:48px 0;padding:26px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#111820,#0b0f14)}
+.cta h2{margin-top:0}
+.btn{display:inline-block;background:var(--accent);color:#06101f;font-weight:700;padding:12px 20px;border-radius:10px;margin-top:6px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.meta{font-size:13px;color:var(--muted)}
+ul.rel{padding-left:20px}
+footer{margin-top:56px;border-top:1px solid var(--border);padding-top:20px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><a href="../">PhotoStamp</a> · Photoshop automation guides</div>
+  <h1>Add a logo watermark to every photo in a folder</h1>
+  <p class="intro">A logo stamp looks trivial until the folder contains a mix of landscape and portrait frames, and every mark comes out a different size. The fix is proportional scaling plus stamping after any crop.</p>
+  <div class="note">Check one output at 100% zoom before running 500 files. A misplaced mark at thumbnail size looks fine and is obviously wrong full size.</div>
+        <h2>1. Prepare the logo correctly</h2>
+        <p>Export a transparent PNG at roughly 1000px wide. White or black fills are fine; avoid a logo that only reads on one background.</p>
+        <h2>2. Scale by percentage of width, not pixels</h2>
+        <p>A 200px mark is huge on a 1000px preview and invisible on a 6000px master. Set the logo width as a percentage of image width so it reads the same at every resolution.</p>
+        <h2>3. Use a smart object</h2>
+        <p>Place the logo, then convert to smart object. Resizing it later stays non-destructive, and swapping the file updates every instance.</p>
+        <h2>4. Position from the edges</h2>
+        <p>Set margin as a percentage too. A fixed 20px margin disappears on large files and dominates on small ones.</p>
+        <h2>5. Batch it</h2>
+        <p>Run the folder through Batch with a recorded action, a droplet, or a script that takes the logo path as an input. The last option is what lets you reuse the same tool for a different client next week.</p>
+  <div class="cta">
+    <h2>Do it in one click instead</h2>
+    <p>PhotoStamp Pro is a Photoshop script that batch-watermarks a whole folder: logo or date, opacity, position, rotation, tiling, written to copies. One-time $29, instant download.</p>
+    <a class="btn" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a>
+    <p class="meta" style="margin-top:12px">Free Lite version (MIT) on <a href="https://github.com/skyforrun/photostamp-pro" target="_blank" rel="noopener">GitHub</a>.</p>
+  </div>
+  <h2>Related guides</h2>
+  <ul class="rel">
+        <li><a href="../guides/batch-watermark-folder-photoshop.html">How to batch watermark a folder of photos in Photoshop</a></li>
+        <li><a href="../guides/watermark-multiple-photos-at-once.html">Watermark multiple photos at once (without wrecking the originals)</a></li>
+        <li><a href="../guides/photoshop-action-watermark-batch-limits.html">Why Photoshop actions fail at watermarking (and what to do instead)</a></li>
+  </ul>
+  <h2>Questions</h2>
+        <details><summary>How big should the logo be?</summary><p>Roughly 15-25% of image width for a corner mark, 8-12% for a tiled pattern.</p></details>
+        <details><summary>Should the mark be white or black?</summary><p>Pick the one that survives your typical background, or use a logo with a subtle stroke so it reads on both.</p></details>
+        <details><summary>Can I watermark video stills the same way?</summary><p>Yes, as long as they are raster files. Batch by frame folder and keep the same percentage rules.</p></details>
+  <footer>
+    <a href="../">Home</a> · <a href="https://skyforer.gumroad.com/l/photostamp-pro">Product</a> · <a href="https://github.com/skyforrun/photostamp-pro">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
