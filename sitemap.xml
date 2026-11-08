@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://skyforrun.github.io/photostamp-pro/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://github.com/skyforrun/photostamp-pro</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://skyforer.gumroad.com/l/photostamp-pro</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/batch-watermark-folder-photoshop.html</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/watermark-multiple-photos-at-once.html</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/photoshop-action-watermark-batch-limits.html</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/add-logo-watermark-all-photos.html</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/stamp-date-on-photos-batch.html</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/photoshop-jsx-script-watermark.html</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/watermark-photos-without-photoshop.html</loc></url>
+  <url><loc>https://skyforrun.github.io/photostamp-pro/guides/protect-client-photos-before-sending.html</loc></url>
+  <url><loc>https://skyforer.gumroad.com/l/photostamp-pro</loc></url>
+  <url><loc>https://github.com/skyforrun/photostamp-pro</loc></url>
 </urlset>
