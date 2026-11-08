@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stamp the date on photos in a batch (EXIF or today) | PhotoStamp</title>
+<meta name="description" content="Batch date-stamping in Photoshop: why actions print the same date on every file, and how to read each photo EXIF instead.">
+<link rel="canonical" href="https://skyforrun.github.io/photostamp-pro/guides/stamp-date-on-photos-batch.html">
+<meta property="og:title" content="Stamp the date on photos in a batch (EXIF or today)">
+<meta property="og:description" content="Batch date-stamping in Photoshop: why actions print the same date on every file, and how to read each photo EXIF instead.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://skyforrun.github.io/photostamp-pro/cover-square.png">
+<style>
+:root{--bg:#08090a;--panel:#101214;--text:#eef1f5;--muted:#98a2b3;--accent:#4b8bff;--border:rgba(255,255,255,.09)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 -apple-system,"Segoe UI",Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:56px 22px 96px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:34px}
+.brand a{color:var(--muted)}
+h1{font-size:38px;line-height:1.15;margin:0 0 18px;letter-spacing:-.02em}
+h2{font-size:20px;margin:34px 0 8px}
+p{margin:0 0 16px;color:#d6dde7}
+.intro{font-size:19px;color:#c3ccd9}
+.note{border-left:3px solid var(--accent);background:rgba(75,139,255,.07);padding:14px 18px;border-radius:0 8px 8px 0;margin:26px 0;color:#c9d5e6}
+details{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:var(--panel)}
+summary{cursor:pointer;font-weight:600}
+details p{margin:10px 0 0;color:var(--muted)}
+.cta{margin:48px 0;padding:26px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#111820,#0b0f14)}
+.cta h2{margin-top:0}
+.btn{display:inline-block;background:var(--accent);color:#06101f;font-weight:700;padding:12px 20px;border-radius:10px;margin-top:6px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.meta{font-size:13px;color:var(--muted)}
+ul.rel{padding-left:20px}
+footer{margin-top:56px;border-top:1px solid var(--border);padding-top:20px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><a href="../">PhotoStamp</a> · Photoshop automation guides</div>
+  <h1>Stamp the date on a batch of photos</h1>
+  <p class="intro">Date stamps are the one watermark where the correct value changes per file. That single fact is why most batch workflows get it wrong and print today's date onto 500 archival scans.</p>
+  <div class="note">For legal or insurance use, add the date inside the image rather than only in the filename — filenames are edited far more casually than pixels.</div>
+        <h2>1. Understand the two date sources</h2>
+        <p>Today's date is a constant, so an action can do it. The photo's EXIF capture date varies per file, and only something that reads metadata at run time can use it.</p>
+        <h2>2. Check whether your files even have EXIF</h2>
+        <p>Scans, screenshots, and exports that went through some pipelines strip it. Verify on a sample before planning a folder-wide run.</p>
+        <h2>3. Pick a format that sorts correctly</h2>
+        <p>yyyy-mm-dd sorts chronologically as text; dd/mm/yyyy does not. If the stamp doubles as an archive label, the sortable form wins.</p>
+        <h2>4. Place it where it will not fight the subject</h2>
+        <p>Bottom-centre is conventional for documentary work and insurance records; bottom-right collides with many logo marks.</p>
+        <h2>5. Run it over a copy</h2>
+        <p>Date stamps are the one mark people later want removed. Keep the source folder pristine.</p>
+  <div class="cta">
+    <h2>Do it in one click instead</h2>
+    <p>PhotoStamp Pro is a Photoshop script that batch-watermarks a whole folder: logo or date, opacity, position, rotation, tiling, written to copies. One-time $29, instant download.</p>
+    <a class="btn" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a>
+    <p class="meta" style="margin-top:12px">Free Lite version (MIT) on <a href="https://github.com/skyforrun/photostamp-pro" target="_blank" rel="noopener">GitHub</a>.</p>
+  </div>
+  <h2>Related guides</h2>
+  <ul class="rel">
+        <li><a href="../guides/batch-watermark-folder-photoshop.html">How to batch watermark a folder of photos in Photoshop</a></li>
+        <li><a href="../guides/watermark-multiple-photos-at-once.html">Watermark multiple photos at once (without wrecking the originals)</a></li>
+        <li><a href="../guides/photoshop-action-watermark-batch-limits.html">Why Photoshop actions fail at watermarking (and what to do instead)</a></li>
+  </ul>
+  <h2>Questions</h2>
+        <details><summary>Can Batch use each file EXIF date?</summary><p>No. Batch replays a fixed action; the date text would be identical on every image.</p></details>
+        <details><summary>What if EXIF is missing?</summary><p>Fall back to file creation date or leave the stamp off for those files and log them.</p></details>
+        <details><summary>Does the font matter?</summary><p>Use a plain sans-serif at small size. Decorative fonts become unreadable at 2% of image height.</p></details>
+  <footer>
+    <a href="../">Home</a> · <a href="https://skyforer.gumroad.com/l/photostamp-pro">Product</a> · <a href="https://github.com/skyforrun/photostamp-pro">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
