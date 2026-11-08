@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Photoshop actions fail at watermarking (and what to do instead) | PhotoStamp</title>
+<meta name="description" content="Batch actions cannot read a logo path, an opacity, or EXIF dates. Here is exactly where actions hit their limit for watermarking.">
+<link rel="canonical" href="https://skyforrun.github.io/photostamp-pro/guides/photoshop-action-watermark-batch-limits.html">
+<meta property="og:title" content="Why Photoshop actions fail at watermarking (and what to do instead)">
+<meta property="og:description" content="Batch actions cannot read a logo path, an opacity, or EXIF dates. Here is exactly where actions hit their limit for watermarking.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://skyforrun.github.io/photostamp-pro/cover-square.png">
+<style>
+:root{--bg:#08090a;--panel:#101214;--text:#eef1f5;--muted:#98a2b3;--accent:#4b8bff;--border:rgba(255,255,255,.09)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 -apple-system,"Segoe UI",Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:56px 22px 96px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:34px}
+.brand a{color:var(--muted)}
+h1{font-size:38px;line-height:1.15;margin:0 0 18px;letter-spacing:-.02em}
+h2{font-size:20px;margin:34px 0 8px}
+p{margin:0 0 16px;color:#d6dde7}
+.intro{font-size:19px;color:#c3ccd9}
+.note{border-left:3px solid var(--accent);background:rgba(75,139,255,.07);padding:14px 18px;border-radius:0 8px 8px 0;margin:26px 0;color:#c9d5e6}
+details{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:var(--panel)}
+summary{cursor:pointer;font-weight:600}
+details p{margin:10px 0 0;color:var(--muted)}
+.cta{margin:48px 0;padding:26px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,#111820,#0b0f14)}
+.cta h2{margin-top:0}
+.btn{display:inline-block;background:var(--accent);color:#06101f;font-weight:700;padding:12px 20px;border-radius:10px;margin-top:6px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.meta{font-size:13px;color:var(--muted)}
+ul.rel{padding-left:20px}
+footer{margin-top:56px;border-top:1px solid var(--border);padding-top:20px;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><a href="../">PhotoStamp</a> · Photoshop automation guides</div>
+  <h1>Why batch actions stop working for watermarks</h1>
+  <p class="intro">An action is a recording. It replays exactly what you did, including the file you happened to have open. That is fine for a fixed pipeline and useless the moment the stamp needs a parameter.</p>
+  <div class="note">The dividing line is simple: constant pipeline, use an action; variable stamp, use something that takes parameters.</div>
+        <h2>1. The logo path is baked in</h2>
+        <p>The action records the file you placed. Change studios, change logos, or move the file and the action breaks. There is no field to type a new path into.</p>
+        <h2>2. Opacity and corner are constants</h2>
+        <p>Recording "opacity 55%, bottom-right" means every run is 55% bottom-right. A client who wants a discreet top-left mark means re-recording, and every re-record is a chance to record the wrong thing.</p>
+        <h2>3. EXIF dates cannot be read into text</h2>
+        <p>An action can insert a text layer, but the text is whatever you typed. Per-photo capture dates require reading document metadata at run time — which actions cannot do.</p>
+        <h2>4. Dialogs break the batch silently</h2>
+        <p>Any step that opens a prompt — including some Save As and Export As configurations — either pauses the batch or fails per file. The run finishes, the folder is empty, and nothing tells you why.</p>
+        <h2>5. Where actions still win</h2>
+        <p>If your pipeline is truly constant — same canvas size, same logo, same corner, every delivery — an action plus Batch is free and fast. Do not replace it just to be modern.</p>
+  <div class="cta">
+    <h2>Do it in one click instead</h2>
+    <p>PhotoStamp Pro is a Photoshop script that batch-watermarks a whole folder: logo or date, opacity, position, rotation, tiling, written to copies. One-time $29, instant download.</p>
+    <a class="btn" href="https://skyforer.gumroad.com/l/photostamp-pro" target="_blank" rel="noopener">Get PhotoStamp Pro — $29</a>
+    <p class="meta" style="margin-top:12px">Free Lite version (MIT) on <a href="https://github.com/skyforrun/photostamp-pro" target="_blank" rel="noopener">GitHub</a>.</p>
+  </div>
+  <h2>Related guides</h2>
+  <ul class="rel">
+        <li><a href="../guides/batch-watermark-folder-photoshop.html">How to batch watermark a folder of photos in Photoshop</a></li>
+        <li><a href="../guides/watermark-multiple-photos-at-once.html">Watermark multiple photos at once (without wrecking the originals)</a></li>
+        <li><a href="../guides/add-logo-watermark-all-photos.html">Add a logo watermark to all photos in a folder (Photoshop)</a></li>
+  </ul>
+  <h2>Questions</h2>
+        <details><summary>Can I add a parameter to an action?</summary><p>Not without a script. Actions have no input fields.</p></details>
+        <details><summary>Do droplets solve this?</summary><p>No — a droplet is an action with an icon. Same constants.</p></details>
+        <details><summary>Is ExtendScript still supported?</summary><p>Yes. It is the automation layer behind Batch and actions, and it ships inside current Photoshop builds.</p></details>
+  <footer>
+    <a href="../">Home</a> · <a href="https://skyforer.gumroad.com/l/photostamp-pro">Product</a> · <a href="https://github.com/skyforrun/photostamp-pro">GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
